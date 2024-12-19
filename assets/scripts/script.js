@@ -109,6 +109,7 @@ function displayCart() {
     checkoutBtn.disabled = false; // Enable Pay button
 }
 
+
 // Razorpay Payment Integration
 function handlePayment() {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -127,9 +128,17 @@ function handlePayment() {
         description: "Payment for your cart items",
         image: "assets/images/images.png", // Replace with your logo URL
         handler: function (response) {
-            alert(`Payment Successful! Payment ID: ${response.razorpay_payment_id}`);
-            localStorage.removeItem("cart"); // Clear cart after successful payment
-            window.location.href = "index.html"; // Redirect to shop page
+            // Show success message
+            document.getElementById("payment-success-message").style.display = 'block';
+            document.getElementById("payment-success-message").innerHTML = `Payment Successful! Payment ID: ${response.razorpay_payment_id}`;
+
+            // Clear cart after successful payment
+            localStorage.removeItem("cart");
+
+            // Optionally, redirect to another page (like shop page or thank you page)
+            setTimeout(function() {
+                window.location.href = "index.html"; // Redirect to the shop page
+            }, 2000); // Delay redirection for 2 seconds to let the user see the message
         },
         prefill: {
             name: "Your Name", // Optional: Replace with user name
@@ -149,3 +158,4 @@ function handlePayment() {
 if (window.location.pathname.includes("cart.html")) {
     displayCart();
 }
+
